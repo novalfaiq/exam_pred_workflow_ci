@@ -7,7 +7,7 @@ import argparse
 import os
 
 def run_training(n_estimators, max_depth):
-    # Mengacu pada data hasil preprocessing (Kriteria 1)
+    # Mengarah ke folder data preprocessing
     data_path = 'exam_score_prediction_preprocessing'
     
     # Load Data
@@ -25,14 +25,15 @@ def run_training(n_estimators, max_depth):
         mse = mean_squared_error(y_test, preds)
         r2 = r2_score(y_test, preds)
 
-        # Manual Logging (Kriteria Skilled)
+        # Manual Logging (Syarat Skilled)
         mlflow.log_param("n_estimators", n_estimators)
         mlflow.log_param("max_depth", max_depth)
         mlflow.log_metric("mse", mse)
         mlflow.log_metric("r2_score", r2)
         
+        # Simpan Model sebagai Artefak
         mlflow.sklearn.log_model(model, "model")
-        print(f"Training Selesai (Python 3.12.7). R2 Score: {r2:.4f}")
+        print(f"Training Selesai. R2 Score: {r2:.4f}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

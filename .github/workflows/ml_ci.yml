@@ -26,7 +26,7 @@ jobs:
       # Tahap 4: Menjalankan Training via MLProject
       - name: Stage 4 - Run MLflow Training
         run: |
-          cd Workflow-CI/MLProject
+          cd MLProject
           mlflow run . --no-conda
 
       # Tahap 5: Menyimpan Artefak ke GitHub (Syarat Skilled)
@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trained-model-py3127
-          path: Workflow-CI/MLProject/mlruns/
+          path: MLProject/mlruns/
