@@ -1,0 +1,37 @@
+name: Machine Learning CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  continuous-integration:
+    runs-on: ubuntu-latest
+    steps:
+      # Tahap 1: Mengambil kode dari repositori
+      - name: Stage 1 - Checkout Code
+        uses: actions/checkout@v4
+
+      # Tahap 2: Menyiapkan Python 3.12.7
+      - name: Stage 2 - Setup Python 3.12.7
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.7'
+
+      # Tahap 3: Instalasi library (mlflow 2.19.0)
+      - name: Stage 3 - Install Dependencies
+        run: |
+          pip install mlflow==2.19.0 pandas scikit-learn
+
+      # Tahap 4: Menjalankan Training via MLProject
+      - name: Stage 4 - Run MLflow Training
+        run: |
+          cd Workflow-CI/MLProject
+          mlflow run . --no-conda
+
+      # Tahap 5: Menyimpan Artefak ke GitHub (Syarat Skilled)
+      - name: Stage 5 - Save Artifacts to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model-py3127
+          path: Workflow-CI/MLProject/mlruns/
